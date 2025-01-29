@@ -5,8 +5,8 @@ import type React from "react"; // Import React
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Registration Form",
-  description: "A simple registration form using Next.js 15",
+  title: "PETIT Waitlist",
+  description: "PETIT Waitlist",
 };
 
 export default function RootLayout({
