@@ -1,13 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 
 const roles = ["developer", "hr", "investor", "business person", "other"];
 
 export default function FormComponent({ submitForm }: { submitForm: any }) {
-  const [role, setRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const { pending } = useFormStatus();
@@ -32,6 +31,10 @@ export default function FormComponent({ submitForm }: { submitForm: any }) {
         setIsSuccess(false);
       }
     });
+  };
+
+  const handleRoleChange = (role: string) => {
+    setSelectedRole(role);
   };
 
   if (isSuccess === true) {
@@ -69,36 +72,32 @@ export default function FormComponent({ submitForm }: { submitForm: any }) {
         />
       </div>
       <div>
-        <label
-          htmlFor="role"
-          className="block text-base font-medium text-gray-700"
-        >
-          Role
+        <label className="block text-base font-medium text-gray-700 mb-2">
+          Roles
         </label>
-        <select
-          id="role"
-          name="role"
-          required
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          className={cn(
-            "bg-white text-lg text-black relative mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring focus:ring-gray-300 focus:ring-opacity-50",
-            {
-              "text-gray-500": !role,
-            }
-          )}
-        >
-          <option className="p-2 text-lg" value="">
-            Select a role
-          </option>
-          {roles.map((r) => (
-            <option className="p-2 text-lg" key={r} value={r}>
-              {r}
-            </option>
+        <div className="space-y-2">
+          {roles.map((role) => (
+            <div key={role} className="flex items-center">
+              <input
+                type="checkbox"
+                id={role}
+                name="role"
+                value={role}
+                checked={selectedRole === role}
+                onChange={() => handleRoleChange(role)}
+                className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded-none"
+              />
+              <label
+                htmlFor={role}
+                className="ml-2 block text-base text-gray-700"
+              >
+                {role}
+              </label>
+            </div>
           ))}
-        </select>
+        </div>
       </div>
-      {role === "other" && (
+      {selectedRole === "other" && (
         <div>
           <label
             htmlFor="customRole"
